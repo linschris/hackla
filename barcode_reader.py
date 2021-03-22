@@ -15,7 +15,7 @@ def decode(image):
         
     return image
 
-        
+
 def increase_contrast(image):
     img = Image.open(image)
     enhancer = ImageEnhance.Contrast(img)
@@ -25,10 +25,8 @@ def increase_contrast(image):
     return im_output
 
 
-
-# load the image to opencv
-
-img = increase_contrast('./image3.jpg')
+# load the image to Pillow
+img = increase_contrast('./image2.jpg')
 # decode detected barcodes & get the image
 # that is drawn
 img = decode(img)
@@ -38,5 +36,3 @@ img.close()
 
 # cv2.imshow("img", img)
 # cv2.waitKey(0)
-
-
