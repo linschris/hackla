@@ -1,3 +1,12 @@
+import json
+from dotenv import *
+import os
+from openfoodfacts import *
+import requests
+
+load_dotenv(find_dotenv())
+SECRET_KEY = os.getenv("FDC_KEY")
+
 class User:
     CONST_CALORIE_MULTIPLIER_35 = 35.0
     CONST_CALORIE_MULTIPLIER_47 = 47.0
@@ -27,6 +36,10 @@ class User:
     #micrograms
     vitaminD = 0.0
     vitaminDGoal = 15.0 
+
+    #mg
+    iron = 0.0
+    ironGoal = 8.7
     
     #User constructor
     def __init__(self, weight, sex):
@@ -75,89 +88,174 @@ class User:
         print("Hello my sex is " + self.sex)
     
     def protein(self):
-        self.proteinGoalMin - self.protein = self.proteinGoalMin
+        self.proteinGoalMin = self.proteinGoalMin - self.protein
         # self.protein_remaining - 
-        self.proteinGoalMax - self.protein = self.proteinGoalMax
+        self.proteinGoalMax = self.proteinGoalMax - self.protein
 
     def calories(self):
-        self.calorieGoalMin - self.calorie = self.calorieGoalMin
-        self.calorieGoalMax - self.calorie = self.calorieGoalMax
+        self.calorieGoalMin = self.calorieGoalMin - self.calorie
+        self.calorieGoalMax = self.calorieGoalMax - self.calorie 
 
     def vitaminC(self):
         if self.sex == "Male":
-            if self.vitaminC > 500 or self.vitaminCGoal < -905:
-                print("If vitaminC intake is over 500 it's useless and if intake is over 1000 it will harm you")
+            if self.vitaminC > 500 or self.vitaminCGoal < -1105:
+                print("If vitaminC intake is over 500 it's useless and if intake is over 1200 it will harm you")
             else:
-                self.vitaminCGoal - self.vitaminC = self.vitaminCGoal
+                self.vitaminCGoal = self.vitaminCGoal - self.vitaminC 
                 
         elif self.sex == "Female":
-            if self.vitaminC > 500 or self.vitaminCGoal < -925:
-                print("If vitaminC intake is over 500 it's useless and if intake is over 1000 it will harm you")
+            if self.vitaminC > 500 or self.vitaminCGoal < -1125:
+                print("If vitaminC intake is over 500 it's useless and if intake is over 1200 it will harm you")
             else:   
-                self.vitaminCGoal - self.vitaminC = self.vitaminCGoal
+                self.vitaminCGoal = self.vitaminCGoal - self.vitaminC
 
     def zinc(self):
       if self.sex == "Male":
-            self.maleZincGoal - self.zinc = self.maleZincGoal
+            self.maleZincGoal = self.maleZincGoal - self.zinc
       elif self.sex == "Female":
-            self.femaleZincGoal - self.zinc = self.femaleZincGoal
+            self.femaleZincGoal = self.femaleZincGoal - self.zinc
 
     def vitaminD(self):
-        self.vitaminDGoal - self.vitaminD = self.vitaminDGoal
+        self.vitaminDGoal = self.vitaminDGoal - self.vitaminD
 
     def calcium(self):
         if self.calcium > 500:
             print ("Calcium intake is too high for one meal")
-            self.calciumGoal - 500 = self.calciumGoal
+            self.calciumGoal = self.calciumGoal - 500
         else:
-            self.calciumGoal - self.calcium = self.calciumGoal
+            self.calciumGoal = self.calciumGoal - self.calcium
         
-    def omega3(self):
+    def iron(self):
         if self.sex == "Male":
-            self.maleOmega3Goal - self.omega3 = self.maleOmega3Goal
+            self.maleIronGoal = self.maleIronGoal - self.iron
         elif self.sex == "Female":
-            self.femaleOmega3Goal - self.omega3 = self.femaleOmega3Goal
+            self.femaleIronGoal = self.femaleIronGoal - self.iron
+    
+    def vitamin_a(self):
+        if self.sex == "Male":
+            self.maleVitaminAGoal = self.maleVitaminAGoal - self.vitaminA
+        elif self.sex == "Female":
+            self.femaleVitaminAGoal = self.femaleVitaminAGoal - self.vitaminA
 
-p1 = User(40, "Male")
-p1.myfunc()
+def calculate_initial_nutrients(user):
+    sex = user["sex"]
+    weight = user["weight"]
+    if sex == "Male":
+        nutrients = {
+            'protein_remaining' : {
+                'min' : 95.0,
+                'max' : 165.0,
+                'unit' : 'g'
+            },
+            'calories_remaining' : {
+                'min' : (weight * 35.0),
+                'max' : (weight * 47.0),
+                'unit' : 'kcal'
+            },
+            'vitamin_c_remaining' : {
+                'min' : 75.0,
+                'unit' : 'mg'
+            },
+            'vitamin_d_remaining' : {
+                'min' : 15.0,
+                'unit' : 'mcg'
+            },
+            'zinc_remaining' : {
+                'min' : 11.0
+            },
+            'calcium_remaining' : {
+                'min' : 1000.0,
+                'max' : 1200.0,
+                'unit' : 'mg'
+            },
+            'iron_remaining' : {
+                'min' : 8.7,
+                'unit' : 'g'
+            },
+            'vitamin_a_remaining' : {
+                'min' : 900,
+                'unit' : 'mcg'
+            }
+        }
 
-# protein: 105-165 grams of protein a day
-# calories: it's a table so we can do by range
-# Vitamin C: 95 mg for men, 75 mg for women. 200-500 is ok but anything more than 1k is unhealthy
-# Zinc: 11mg for men, 8mg for women
-# Vitamin D: 15 mcg 
-# Getting in 1000 -1200 mg each day of calcium, also in divided amounts throughout the day, for bone health is imperative. Your body can only absorb 500 mg of calcium at one time.
-# Omega-3: women: 1.1g, men: 1.6g
+    elif sex == "Female":
+        nutrients = {
+            'calories_remaining' : {
+                'min' : weight * 35.0,
+                'max' : weight * 47.0,
+                'unit' : 'kcal'
+            },
+            'protein_remaining' : {
+                'min' : 95.0,
+                'max' : 165.0,
+                'unit' : 'g'
+            },
+            'vitamin_c_remaining' : {
+                'min' : 95.0,
+                'unit' : 'mg'
+            },
+            'zinc_remaining' : {
+                'min' : 8.0,
+                'unit' : 'mg'
+            },
+            'vitamin_d_remaining' : {
+                'min' : 15.0,
+                'unit' : 'mcg'
+            },        
+            'calcium_remaining' : {
+                'min' : 1000.0,
+                'max' : 1200.0,
+                'unit' : 'mg'
+            },
+            'iron_remaining' : {
+                'min' : 14.8,
+                'unit' : 'g'
+            },
+            'vitamin_a_remaining' : {
+                'min' : 700,
+                'unit' : 'mcg'
+            }
+        }
+    return json.dumps(nutrients)
 
-'''
-This class has 2 main methods
+# def get_barcode_data(barcode):
+#     pass
 
-1. calculate_initial_nutrients(user):
-This takes in some user data, and it gets the initial nutrients
-user: {
-    age: 12,
-    sex: "Male",
-    weight: 10.4
-}
-This returns some data about what nutrients are still needed
-response: {
-"calcium_remaining": 250,
-"calcium_unit": "mg",
-...
-}
+def search_items(query):
+    pass
 
+def update_item(item, nutrients, modifier=1):
+    
+    return json.dumps(nutrients)
 
-2. calculate_remaining_nutrients(current_nutrients, food_item_to_consume): 
-This takes in the current remaining nutrients FROM the user, and subtracts the food item's nutrients from the remaining
-Then it returns some data about what nutrients are still needed. This is the same format.
-response: {
-"calcium_remaining": 250,
-"calcium_unit": "mg",
+def fetch_item_barcode(barcode):
+    response = requests.get("https://world.openfoodfacts.org/data/data-fields.txt")
+    product = openfoodfacts.products.get_product(barcode)["product"]
+    item = {}
+    item['calories']  = product["nutriments"]["energy-kcal"]
+    item['proteins']  = product["nutriscore_data"]["proteins"] if ('proteins'  in product["nutriscore_data"]) else 0
+    item['vitamin_c'] = product["nutriments"]["vitamin-c"]     if ('vitamin-c' in product["nutriments"])      else 0
+    item['vitamin_d'] = product["nutriments"]["vitamin-d"]     if ('vitamin-d' in product["nutriments"])      else 0
+    item['calcium']   = product["nutriments"]["calcium"]       if ('calcium'   in product["nutriments"])      else 0
+    item['iron']      = product["nutriments"]["iron"]          if ('iron'      in product["nutriments"])      else 0
+    item['vitamin_a'] = product["nutriments"]["vitamin-a"]     if ('vitamin-a' in product["nutriments"])      else 0
+    return item
 
-Hello developers! Tanhuynh226 here! We will be needing to implement search_items(), add_item_barcode(), add_item_fdcid(), delete_item_barcode(), delete_item_fdcid(), and get_barcode_data()! Best of luck hackers!
-...
-}
-'''
+def add_item_barcode(barcode, nutrients):
+    item = fetch_item_barcode(barcode)
+    return update_item(item, nutrients)
 
+# def add_item_fdcid(item):
+#     return json.dumps(nutrients)
+#     pass
 
+def delete_item_barcode(barcode, nutrients):
+    item = fetch_item_barcode(barcode)
+    return update_item(item, nutrients, -1)
 
+# def delete_item_fdcid(item):
+#     return json.dumps(nutrients)
+#     pass
+
+# barcode for coke is "5449000000996"
+print(fetch_item_barcode("737628064502"))

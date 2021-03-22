@@ -1,7 +1,9 @@
 from pyzbar import pyzbar
 import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw
+from openfoodfacts import *
 import cv2
+import json
 
 def decode(image):
     # decodes all barcodes from an image
@@ -12,8 +14,7 @@ def decode(image):
         print("Type:", obj.type)
         print("Data:", obj.data)
         print(obj.rect)
-        
-    return image
+        return (obj.data, obj.rect)
 
 
 def increase_contrast(image):
@@ -24,15 +25,40 @@ def increase_contrast(image):
     # im_output.save('more-image.png')
     return im_output
 
+def get_barcode_num(image):
+    # load the image to Pillow
+    img = increase_contrast(image)
+    # decode detected barcodes & get the image
+    # that is drawn
+    (barcode_num, barcode_rect) = decode(img)
+    return (barcode_num, barcode_rect)
 
-# load the image to Pillow
-img = increase_contrast('./image2.jpg')
-# decode detected barcodes & get the image
-# that is drawn
-img = decode(img)
-# show the image
-img.show()
-img.close()
+def get_barcode_info(image):
+    (barcode_num, barcode_rect) = get_barcode_num(image)
+    product = openfoodfacts.products.get_product(barcode_num)
+    (top, left, width, height) = barcode_rect
+    if(product["status_verbose"] != "product not found"):
+        product_info = {
+            "code": product["code"],
+            "box": {
+                "left": left,
+                "top": top,
+                "width": width,
+                "height": height
+            },
+            "product": {
+                "generic_name": product["product"]["generic_name_ql"],
+                "quantity": product["product"]["quantity"],
+                "brands": product["product"]["brands"],
+                "nutriscore_grade": product["product"]["nutriscore_grade"],
+                "nova_group": product["nova_groups"]
+            }
+        }
+    else:
+        product_info = {}
+    return product_info
+
 
 # cv2.imshow("img", img)
 # cv2.waitKey(0)
+

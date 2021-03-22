@@ -1,41 +1,49 @@
 from flask import Flask, request, redirect, url_for, render_template, session, jsonify
-from dotenv import *
 from user import *
-import os
-
-load_dotenv(find_dotenv())
-SECRET_KEY = os.getenv("FDC_KEY")
+from barcode_reader import *
+import requests
+from PIL import Image
+import urllib2
+import io
 
 app = Flask("server")
 
 @app.route('/calculate/initial', methods=['POST'])
-def calculate_initial(user):
+def calculate_initial():
+    user = request.json
     nutrients = calculate_initial_nutrients(user)
     return jsonify(nutrients)
 
 @app.route('/item/barcode', methods=['GET'])
-def get_barcode_info(barcode):
-    item_info = get_barcode_data(barcode)
-    return jsonify(item_info)
+def get_barcode_info():
+    request
+    # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
+    img = Image.open(urllib2.urlopen(url))
+    barcode_info = get_barcode_info(img)
+    return jsonify(barcode_info)
 
 @app.route('/item/search', methods=['GET'])
-def search(item):
+def search():
     item = request.args.get('query')
     item_list = search_items(item)
     return jsonify(item_list)
 
 @app.route('/item/fetch', methods=['POST'])
-def add_item(item, nutrients):
-    if item.request.json['food']['type'] == "barcode":
-        nutrients = add_item_barcode(item)
-    elif item.request.json['food']['type'] == "fdcid":
-        nutrients = add_item_fdcid(item)
+def add_item():
+    food = request.json['food']
+    nutrients = request.json['nutrients']
+    if food['type'] == "barcode":
+        nutrients = add_item_barcode(food['id'], nutrients)
+    elif food['type'] == "fdcid":
+        nutrients = add_item_fdcid(food['id'], nutrients)
     return jsonify(nutrients)
 
 @app.route('/item/delete', methods=['POST'])
 def delete_item(item, nutrients):
-    if item.request.json['food']['type'] == "barcode":
-        nutrients = delete_item_barcode(item)
-    elif item.request.json['food']['type'] == "fdcid":
-        nutrients = delete_item_fdcid(item)
+    food = request.json['food']
+    nutrients = request.json['nutrients']
+    if food['type'] == "barcode":
+        nutrients = delete_item_barcode(food['id'], nutrients)
+    elif food['type'] == "fdcid":
+        nutrients = delete_item_fdcid(food['id'], nutrients)
     return jsonify(nutrients)
