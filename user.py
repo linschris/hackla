@@ -153,6 +153,8 @@ Then it returns some data about what nutrients are still needed. This is the sam
 response: {
 "calcium_remaining": 250,
 "calcium_unit": "mg",
+
+Hello developers! Tanhuynh226 here! We will be needing to implement search_items(), add_item_barcode(), add_item_fdcid(), delete_item_barcode(), delete_item_fdcid(), and get_barcode_data()! Best of luck hackers!
 ...
 }
 '''
