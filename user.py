@@ -1,4 +1,4 @@
-.import json
+import json
 from dotenv import *
 import os
 from openfoodfacts import *
