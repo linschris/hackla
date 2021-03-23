@@ -3,7 +3,6 @@ from user import *
 from barcode_reader import *
 import requests
 from PIL import Image
-from urllib.request import urlopen
 import io
 
 app = Flask("server")
@@ -15,9 +14,10 @@ def calculate_initial():
     return jsonify(nutrients)
 
 @app.route('/item/barcode', methods=['GET'])
-def get_barcode_data(url):
+def get_barcode_data():
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
-    img = Image.open(request.args.get('url'))
+    imgurl = request.args.get('imgurl')
+    img = Image.open(requests.get(imgurl, stream=True).raw)
     barcode_info = get_barcode_info(img)
     return jsonify(barcode_info)
 
