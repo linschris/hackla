@@ -17,7 +17,7 @@ def calculate_initial():
 @app.route('/item/barcode', methods=['GET'])
 def get_barcode_data(url):
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
-    img = Image.open(urlopen(url))
+    img = Image.open(request.args.get('url'))
     barcode_info = get_barcode_info(img)
     return jsonify(barcode_info)
 
