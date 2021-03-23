@@ -1,5 +1,6 @@
 pyzbar==0.1.8
 Flask==1.1.2
+gunicorn==20.0.4
 numpy==1.19.5
 openfoodfacts==0.1.2
 requests==2.25.1
