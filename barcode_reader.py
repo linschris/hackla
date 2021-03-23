@@ -62,7 +62,7 @@ def get_product_info(barcode_num): #Use this if you have barcode ID ALREADY
         product_info = {
         "code": product["code"],
         "product": {
-            "generic_name": product["product"]["generic_name_ql"],
+            "generic_name": product["product"]["generic_name_en"],
             "quantity": product["product"]["quantity"],
             "brands": product["product"]["brands"],
             "nutriscore_grade": product["product"]["nutriscore_grade"],
