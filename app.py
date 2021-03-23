@@ -4,6 +4,7 @@ from barcode_reader import *
 import requests
 from PIL import Image
 import io
+import base64
 
 app = Flask("server")
 
@@ -16,15 +17,12 @@ def calculate_initial():
 @app.route('/item/barcode', methods=['GET'])
 def get_barcode_data():
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
-    imgurl = request.args.get('imgurl')
-    img = Image.open(requests.get(imgurl, stream=True).raw)
-    barcode_info = get_barcode_info(img)
-    return jsonify(barcode_info)
-
-@app.route('/item/barcode/id', methods=['GET'])
-def get_product_data():
-    barcode_id = request.args.get('query')
-    product_info = get_product_info(barcode_id)
+    (base64String) = request.form
+    print(request.form)
+    # img = Image.open(requests.get(imgurl, stream=True).raw)
+    buf = io.BytesIO(base64String)
+    img = Image.open(buf)
+    product_info = get_barcode_info(img)
     return jsonify(product_info)
 
 @app.route('/item/search', methods=['GET'])

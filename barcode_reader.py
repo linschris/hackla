@@ -55,29 +55,4 @@ def get_barcode_info(image):
     else:
         product_info = {}
     return product_info
-    
-def get_product_info(barcode_num): #Use this if you have barcode ID ALREADY
-    product = openfoodfacts.products.get_product(barcode_num)
-    if(product["status_verbose"] != "product not found"):
-        product_info = {
-        "code": product["code"],
-        "product": {
-            "generic_name": product["product"]["generic_name_en"],
-            "quantity": product["product"]["quantity"],
-            "brands": product["product"]["brands"],
-            "nutriscore_grade": product["product"]["nutriscore_grade"],
-            "nova_group": product["product"]["nova_groups"]
-            }
-        }
-    else:
-        product_info = {
-            "product": "not found"
-        }
-    return product_info
-
-    
-
-
-# cv2.imshow("img", img)
-# cv2.waitKey(0)
 
