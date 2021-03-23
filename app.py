@@ -21,10 +21,9 @@ def get_barcode_data(url):
     barcode_info = get_barcode_info(img)
     return jsonify(barcode_info)
 
-@app.route('/item/search')
+@app.route('/item/search', methods=['GET'])
 def search():
-    item = request.args.get('query')
-    item_list = search_items(item)
+    item_list = search_items(request.query_string)
     return item_list.json()
 
 @app.route('/item/add', methods=['POST'])
