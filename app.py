@@ -21,6 +21,12 @@ def get_barcode_data():
     barcode_info = get_barcode_info(img)
     return jsonify(barcode_info)
 
+@app.route('/item/barcode/id', methods=['GET'])
+def get_product_data():
+    barcode_id = request.args.get('query')
+    product_info = get_product_info(barcode_id)
+    return jsonify(product_info)
+
 @app.route('/item/search', methods=['GET'])
 def search():
     item = request.args.get('query')

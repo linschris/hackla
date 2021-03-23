@@ -17,8 +17,7 @@ def decode(image):
 
 
 def increase_contrast(image):
-    img = Image.open(image)
-    enhancer = ImageEnhance.Contrast(img)
+    enhancer = ImageEnhance.Contrast(image)
     factor = 5 #increase contrast
     im_output = enhancer.enhance(factor)
     # im_output.save('more-image.png')
@@ -38,24 +37,45 @@ def get_barcode_info(image):
     (top, left, width, height) = barcode_rect
     if(product["status_verbose"] != "product not found"):
         product_info = {
-            "code": product["code"],
-            "box": {
-                "left": left,
-                "top": top,
-                "width": width,
-                "height": height
-            },
-            "product": {
-                "generic_name": product["product"]["generic_name_ql"],
-                "quantity": product["product"]["quantity"],
-                "brands": product["product"]["brands"],
-                "nutriscore_grade": product["product"]["nutriscore_grade"],
-                "nova_group": product["nova_groups"]
+        "code": product["code"],
+        "box": {
+            "left": left,
+            "top": top,
+            "width": width,
+            "height": height
+        },
+        "product": {
+            "generic_name": product["product"]["generic_name_ql"],
+            "quantity": product["product"]["quantity"],
+            "brands": product["product"]["brands"],
+            "nutriscore_grade": product["product"]["nutriscore_grade"],
+            "nova_group": product["nova_groups"]
             }
         }
     else:
         product_info = {}
     return product_info
+    
+def get_product_info(barcode_num): #Use this if you have barcode ID ALREADY
+    product = openfoodfacts.products.get_product(barcode_num)
+    if(product["status_verbose"] != "product not found"):
+        product_info = {
+        "code": product["code"],
+        "product": {
+            "generic_name": product["product"]["generic_name_ql"],
+            "quantity": product["product"]["quantity"],
+            "brands": product["product"]["brands"],
+            "nutriscore_grade": product["product"]["nutriscore_grade"],
+            "nova_group": product["nova_groups"]
+            }
+        }
+    else:
+        product_info = {
+            "product": "not found"
+        }
+    return product_info
+
+    
 
 
 # cv2.imshow("img", img)
