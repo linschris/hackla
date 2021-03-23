@@ -3,11 +3,15 @@ from dotenv import *
 import os
 from openfoodfacts import *
 import requests
+import urllib
+
 
 load_dotenv(find_dotenv())
-SECRET_KEY = os.getenv("FDC_KEY")
 
-class User:
+
+SECRET_KEY = os.getenv("FDC_API_KEY")
+
+# class User:
     CONST_CALORIE_MULTIPLIER_35 = 35.0
     CONST_CALORIE_MULTIPLIER_47 = 47.0
     weight = 0.0
@@ -222,9 +226,40 @@ def calculate_initial_nutrients(user):
 #     pass
 
 def search_items(query):
+    response = requests.get('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + SECRET_KEY + '&query=' + urllib.urlencode(query))
+    itemList = []
+     
+
     pass
 
-def update_item(item, nutrients, modifier=1):
+def update_nutrients(item, nutrients, modifier=1):
+    m = modifier
+    item['proteins'] * m
+    nutrients['protein_remaining'][min] -= item['proteins']
+    nutrients['protein_remaining'][max] -= item['proteins']
+    
+    item['calories'] * m
+    nutrients['calories_remaining'][min] -= item['calories']
+    nutrients['calories_remaining'][max] -= item['calories']
+    
+    item['vitamin_c'] * m
+    nutrients['vitamin_c_remaining'][min] -= item['vitamin_c']
+    
+    item['zinc'] * m    
+    nutrients['zinc_remaining'][min] -= item['zinc']
+    
+    item['vitamin_d'] * m
+    nutrients['vitamin_d_remaining'][min] -= item['vitamin_d']
+    
+    item['calcium'] * m
+    nutrients['calcium_remaining'][min] -= item['calcium']
+    nutrients['calcium_remaining'][max] -= item['calcium']
+    
+    item['iron'] * m
+    nutrients['iron_remaining'][min] -= item['iron']
+    
+    item['vitamin_a'] * m
+    nutrients['vitamin_a_remaining'][min] -= item['vitamin_a']
     
     return json.dumps(nutrients)
 
@@ -242,8 +277,8 @@ def fetch_item_barcode(barcode):
     return item
 
 def add_item_barcode(barcode, nutrients):
-    item = fetch_item_barcode(barcode)
-    return update_item(item, nutrients)
+    item = fetch_item_barcode(barcode)    
+    return update_nutrients(item, nutrients)
 
 # def add_item_fdcid(item):
 #     return json.dumps(nutrients)
