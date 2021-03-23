@@ -97,31 +97,31 @@ def search_items(query):
 
 def update_nutrients(item, nutrients, modifier=1):
     m = modifier
-    item['proteins'] * m
+    item['proteins'] *= m
     nutrients['protein_remaining']['min'] -= item['proteins']
     nutrients['protein_remaining']['max'] -= item['proteins']
     
-    item['calories'] * m
+    item['calories'] *= m
     nutrients['calories_remaining']['min'] -= item['calories']
     nutrients['calories_remaining']['max'] -= item['calories']
     
-    item['vitamin_c'] * m
+    item['vitamin_c'] *= m
     nutrients['vitamin_c_remaining']['min'] -= item['vitamin_c']
     
-    # item['zinc'] * m    
+    # item['zinc'] *= m    
     # nutrients['zinc_remaining']['min'] -= item['zinc']
     
-    item['vitamin_d'] * m
+    item['vitamin_d'] *= m
     nutrients['vitamin_d_remaining']['min'] -= item['vitamin_d']
     
-    item['calcium'] * m
+    item['calcium'] *= m
     nutrients['calcium_remaining']['min'] -= item['calcium']
     nutrients['calcium_remaining']['max'] -= item['calcium']
     
-    item['iron'] * m
+    item['iron'] *= m
     nutrients['iron_remaining']['min'] -= item['iron']
     
-    item['vitamin_a'] * m
+    item['vitamin_a'] *= m
     nutrients['vitamin_a_remaining']['min'] -= item['vitamin_a']
     
     return nutrients
