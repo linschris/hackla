@@ -24,6 +24,8 @@ def get_barcode_data(url):
 @app.route('/item/search', methods=['GET'])
 def search():
     item = request.args.get('query')
+    print(item)
+    print(type(item))
     item_list = search_items(item)
     return item_list.json()
 
@@ -46,3 +48,5 @@ def delete_item():
     elif food['type'] == "fdcid":
         nutrients = delete_item_fdcid(food['id'], nutrients)
     return jsonify(nutrients)
+    
+search()
