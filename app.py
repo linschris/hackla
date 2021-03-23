@@ -16,7 +16,6 @@ def calculate_initial():
 
 @app.route('/item/barcode', methods=['GET'])
 def get_barcode_data(url):
-    request
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
     img = Image.open(urlopen(url))
     barcode_info = get_barcode_info(img)
@@ -28,7 +27,7 @@ def search():
     item_list = search_items(item)
     return item_list.json()
 
-@app.route('/item/fetch', methods=['POST'])
+@app.route('/item/add', methods=['POST'])
 def add_item():
     food = request.json['food']
     nutrients = request.json['nutrients']
@@ -39,7 +38,7 @@ def add_item():
     return jsonify(nutrients)
 
 @app.route('/item/delete', methods=['POST'])
-def delete_item(item, nutrients):
+def delete_item():
     food = request.json['food']
     nutrients = request.json['nutrients']
     if food['type'] == "barcode":
