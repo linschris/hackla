@@ -2,7 +2,6 @@ from pyzbar import pyzbar
 import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw
 from openfoodfacts import *
-import cv2
 import json
 
 def decode(image):
