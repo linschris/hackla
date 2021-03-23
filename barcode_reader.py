@@ -66,7 +66,7 @@ def get_product_info(barcode_num): #Use this if you have barcode ID ALREADY
             "quantity": product["product"]["quantity"],
             "brands": product["product"]["brands"],
             "nutriscore_grade": product["product"]["nutriscore_grade"],
-            "nova_group": product["nova_groups"]
+            "nova_group": product["product"]["nova_groups"]
             }
         }
     else:
