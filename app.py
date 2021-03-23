@@ -25,8 +25,7 @@ def get_barcode_data(url):
 def search():
     item = request.args.get('query')
     item_list = search_items(item)
-    print(item_list)
-    return json.dumps(item_list)
+    return item_list.json()
 
 @app.route('/item/add', methods=['POST'])
 def add_item():

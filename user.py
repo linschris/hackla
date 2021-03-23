@@ -91,7 +91,7 @@ def calculate_initial_nutrients(user):
     return nutrients
 
 def search_items(query):
-    response = requests.get('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + SECRET_KEY + '&query=' + query)
+    response = requests.get('https://api.nal.usda.gov/fdc/v1/foods/search?api_key=' + SECRET_KEY + '&query=' + str(query))
     response.encoding = 'utf-8'
     return response
 
