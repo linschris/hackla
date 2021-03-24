@@ -5,8 +5,10 @@ import requests
 from PIL import Image
 import io
 import base64
+from flask_cors import CORS
 
 app = Flask("server")
+CORS(app)
 
 @app.route('/calculate/initial', methods=['POST'])
 def calculate_initial():
@@ -17,12 +19,10 @@ def calculate_initial():
 @app.route('/item/barcode', methods=['GET'])
 def get_barcode_data():
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
-    (base64String) = request.form
-    print(request.form)
-    # img = Image.open(requests.get(imgurl, stream=True).raw)
-    buf = io.BytesIO(base64String)
-    img = Image.open(buf)
-    product_info = get_barcode_info(img)
+    base64String = base64.b64decode(request.data)
+    image = io.BytesIO(base64String)
+    # Do need to Image.open(image)?
+    product_info = get_barcode_info(image)
     return jsonify(product_info)
 
 @app.route('/item/search', methods=['GET'])
@@ -50,3 +50,7 @@ def delete_item():
     elif food['type'] == "fdcid":
         nutrients = delete_item_fdcid(food['id'], nutrients)
     return jsonify(nutrients)
+
+@app.route('/')
+def home():
+    return 'Recovery Backend'

@@ -130,12 +130,12 @@ def fetch_item_barcode(barcode):
     product = openfoodfacts.products.get_product(barcode)["product"]
     item = {}
     item['calories']  = product["nutriments"]["energy-kcal"]
-    item['proteins']  = product["nutriscore_data"]["proteins"] if ('proteins'  in product["nutriscore_data"]) else 0
-    item['vitamin_c'] = product["nutriments"]["vitamin-c"]     if ('vitamin-c' in product["nutriments"])      else 0
-    item['vitamin_d'] = product["nutriments"]["vitamin-d"]     if ('vitamin-d' in product["nutriments"])      else 0
-    item['calcium']   = product["nutriments"]["calcium"]       if ('calcium'   in product["nutriments"])      else 0
-    item['iron']      = product["nutriments"]["iron"]          if ('iron'      in product["nutriments"])      else 0
-    item['vitamin_a'] = product["nutriments"]["vitamin-a"]     if ('vitamin-a' in product["nutriments"])      else 0
+    item['proteins']  = product["nutriscore_data"]["proteins_value"] if ('proteins_value'  in product["nutriscore_data"]) else 0
+    item['vitamin_c'] = product["nutriments"]["vitamin-c_value"]     if ('vitamin-c_value' in product["nutriments"])      else 0
+    item['vitamin_d'] = product["nutriments"]["vitamin-d_value"]     if ('vitamin-d_value' in product["nutriments"])      else 0
+    item['calcium']   = product["nutriments"]["calcium_value"]       if ('calcium_value'   in product["nutriments"])      else 0
+    item['iron']      = product["nutriments"]["iron_value"]          if ('iron_value'      in product["nutriments"])      else 0
+    item['vitamin_a'] = product["nutriments"]["vitamin-a_value"]     if ('vitamin-a_value' in product["nutriments"])      else 0
     return item
 
 def fetch_item_fdcid(fdcid):
@@ -146,15 +146,19 @@ def fetch_item_fdcid(fdcid):
         "Energy": "calories",
         "Protein": "proteins",
         "Vitamin C, total ascorbic acid" : "vitamin_c",
-        "Vitamin D (D2 + D3), International Units" : "vitamin_d",
         "Calcium, Ca" : "calcium",
+        "Vitamin D (D2 + D3), International Units" : "vitamin_d",
         "Iron, Fe" : "iron",
-        "Vitamin A, IU" : "vitamin_a"
+        "Vitamin A, IU" : "vitamin_a",
+    
     }
     for entry in product["foodNutrients"]:
         nutrient = entry['nutrient']
         if nutrient['name'] in NUTRIENT_LIST:
+            if(nutrient['name'] == "Vitamin D (D2 + D3), International Units"):
+                entry['amount'] /= 40
             item[NUTRIENT_LIST[nutrient['name']]] = entry["amount"]
+    
     return item
 
 def add_item_barcode(barcode, nutrients):

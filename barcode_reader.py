@@ -3,6 +3,8 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw
 from openfoodfacts import *
 import json
+import io
+import base64
 
 def decode(image):
     # decodes all barcodes from an image
@@ -45,7 +47,7 @@ def get_barcode_info(image):
             "height": height
         },
         "product": {
-            "generic_name": product["product"]["generic_name_ql"],
+            "generic_name": product["product"]["generic_name_en"],
             "quantity": product["product"]["quantity"],
             "brands": product["product"]["brands"],
             "nutriscore_grade": product["product"]["nutriscore_grade"],
@@ -55,4 +57,3 @@ def get_barcode_info(image):
     else:
         product_info = {}
     return product_info
-
