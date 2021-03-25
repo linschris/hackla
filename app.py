@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template, session, jsonify
+from flask import Flask, request, redirect, url_for, render_template, session, jsonify, abort
 from user import *
 from barcode_reader import *
 import requests
@@ -16,13 +16,18 @@ def calculate_initial():
     nutrients = calculate_initial_nutrients(user)
     return jsonify(nutrients)
 
-@app.route('/item/barcode', methods=['GET'])
+@app.route('/item/barcode', methods=['POST'])
 def get_barcode_data():
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
-    base64String = base64.b64decode(request.data)
-    image = io.BytesIO(base64String)
+    image_keys = request.json
+    dimensions = image_keys['dimensions']
+    base64String = base64.b64decode(image_keys['image'])
+    image = Image.open(io.BytesIO(base64String))
+    image = crop(image, dimensions['x'], dimensions['y'], dimensions['height'], dimensions['width'])
     # Do need to Image.open(image)?
     product_info = get_barcode_info(image)
+    if 'error' in product_info:
+        abort(product_info['code'], description=product_info["error"])
     return jsonify(product_info)
 
 @app.route('/item/search', methods=['GET'])
