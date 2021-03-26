@@ -20,11 +20,8 @@ def calculate_initial():
 def get_barcode_data():
     # This receives a raw image data url. Look to Pillow documentation for specific parsing instructions.
     image_keys = request.json
-    dimensions = image_keys['dimensions']
     base64String = base64.b64decode(image_keys['image'])
     image = Image.open(io.BytesIO(base64String))
-    image = crop(image, dimensions['x'], dimensions['y'], dimensions['height'], dimensions['width'])
-    # Do need to Image.open(image)?
     product_info = get_barcode_info(image)
     if 'error' in product_info:
         abort(product_info['code'], description=product_info["error"])
@@ -35,6 +32,12 @@ def search():
     item = request.args.get('query')
     item_list = search_items(item)
     return item_list.json()
+
+@app.route('/item/info', methods=['GET'])
+def get_search_data():
+    fdcid = request.args.get('fdcid')
+    product_info = get_fdcid_info(fdcid)
+    return jsonify(product_info)
 
 @app.route('/item/add', methods=['POST'])
 def add_item():

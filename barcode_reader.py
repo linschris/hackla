@@ -18,16 +18,6 @@ def decode(image):
         print(obj.rect)
         return (obj.data, obj.rect)
 
-def crop(image, x, y, height, width):
-    print(width)
-    print(height)
-    top = y
-    bottom = y + height
-    left = x
-    right = x + width
-    croppedImage = image.crop((left, top, right, bottom))
-    return croppedImage
-
 def increase_contrast(image):
     enhancer = ImageEnhance.Contrast(image)
     contrast_factor = 5
@@ -51,6 +41,7 @@ def get_barcode_info(image):
     if(product["status_verbose"] != "product not found"):
         product_info = {
         "code": product["code"],
+        "type": "barcode",
         "box": {
             "left": left,
             "top": top,
@@ -58,20 +49,31 @@ def get_barcode_info(image):
             "height": height
         },
         "product": {
-            "generic_name": product["product"].get("generic_name"),
+            "generic_name": product["product"].get("generic_name_en"),
             "product_name": product["product"].get("product_name"),
             "quantity": product["product"].get("quantity"),
             "brands": product["product"].get("brands"),
             "nutriscore_grade": product["product"].get("nutriscore_grade"),
             "nova_group": product["product"].get("nova_groups"),
             "serving_quantity": product["product"].get("serving_quantity"),
-            "calories" : product["product"]["nutriments"].get("energy-kcal"),
-            "proteins" : product["product"]["nutriscore_data"].get("proteins_value"),
-            "vitamin_c" : product["product"]["nutriments"].get("vitamin-c_value"),
-            "vitamin_d" : product["product"]["nutriments"].get("vitamin-d_value"),
-            "calcium" : product["product"]["nutriments"].get("calcium_value"),
-            "iron" : product["product"]["nutriments"].get("iron_value"),
-            "vitamin_a" : product["product"]["nutriments"].get("vitamin-a_value"),
+            "nutriments" : {
+                "calories" : product["product"]["nutriments"].get("energy-kcal"),
+                "proteins" : product["product"]["nutriments"].get("proteins_value"),
+                "vitamin_c" : product["product"]["nutriments"].get("vitamin-c_value"),
+                "vitamin_d" : product["product"]["nutriments"].get("vitamin-d_value"),
+                "calcium" : product["product"]["nutriments"].get("calcium_value"),
+                "iron" : product["product"]["nutriments"].get("iron_value"),
+                "vitamin_a" : product["product"]["nutriments"].get("vitamin-a_value")
+                },
+            "units" : {
+                "calories": "Cal",
+                "proteins" : product["product"]["nutriments"].get("proteins_unit"),
+                "vitamin_c" : product["product"]["nutriments"].get("vitamin-c_unit"),
+                "vitamin_d" : product["product"]["nutriments"].get("vitamin-d_unit"),
+                "calcium" : product["product"]["nutriments"].get("calcium_unit"),
+                "iron" : product["product"]["nutriments"].get("iron_unit"),
+                "vitamin_a" : product["product"]["nutriments"].get("vitamin-a_unit")
+            }
             }
         }
     

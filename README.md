@@ -12,6 +12,7 @@ https://www.hss.edu/guide-COVID-19-nutritional-rehabilitation-restore-replenish.
 
 ### How we built it
 
+We used Python to pull information about a food's nutrients from the openfoodfacts and FoodData Central APIs. With this data, we and created functions that would keep track of nutrient intake and also calculate how much a person needs based on sex and weight. 
 
 
 ### What we learned
@@ -22,7 +23,7 @@ https://www.hss.edu/guide-COVID-19-nutritional-rehabilitation-restore-replenish.
 
 ### Challenges we faced
 
-* Nutrient unit conversion
+* Nutrient unit conversion from differences in APIs
 * Managing state in React
 * Initially had low success rate for barcode-image recognition
 * Handling and sorting from messy databases
