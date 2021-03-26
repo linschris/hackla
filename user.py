@@ -152,32 +152,32 @@ def get_fdcid_info(fdcid):
 
 def update_nutrients(item, nutrients, modifier=1):
     m = modifier
-    item['proteins'] *= m
-    nutrients['protein_remaining']['min'] -= item['proteins']
-    nutrients['protein_remaining']['max'] -= item['proteins']
+    item['proteins'] = item.get('proteins', 0) * m
+    nutrients['protein_remaining']['min'] -= item.get('proteins', 0)
+    nutrients['protein_remaining']['max'] -= item.get('proteins', 0)
     
-    item['calories'] *= m
-    nutrients['calories_remaining']['min'] -= item['calories']
-    nutrients['calories_remaining']['max'] -= item['calories']
+    item['calories'] = item.get('calories', 0) * m
+    nutrients['calories_remaining']['min'] -= item.get('calories', 0)
+    nutrients['calories_remaining']['max'] -= item.get('calories', 0)
     
-    item['vitamin_c'] *= m
-    nutrients['vitamin_c_remaining']['min'] -= item['vitamin_c']
+    item['vitamin_c'] = item.get('vitamin_c', 0) * m
+    nutrients['vitamin_c_remaining']['min'] -= item.get('vitamin_c', 0)
     
     # item['zinc'] *= m    
     # nutrients['zinc_remaining']['min'] -= item['zinc']
     
-    item['vitamin_d'] *= m
-    nutrients['vitamin_d_remaining']['min'] -= item['vitamin_d']
+    item['vitamin_d'] = item.get('vitamin_d', 0) * m
+    nutrients['vitamin_d_remaining']['min'] -= item.get('vitamin_d', 0)
     
-    item['calcium'] *= m
-    nutrients['calcium_remaining']['min'] -= item['calcium']
-    nutrients['calcium_remaining']['max'] -= item['calcium']
+    item['calcium'] = item.get('calcium', 0) * m
+    nutrients['calcium_remaining']['min'] -= item.get('calcium', 0)
+    nutrients['calcium_remaining']['max'] -= item.get('calcium', 0)
     
-    item['iron'] *= m
-    nutrients['iron_remaining']['min'] -= item['iron']
+    item['iron'] = item.get('iron', 0) * m
+    nutrients['iron_remaining']['min'] -= item.get('iron', 0)
     
-    item['vitamin_a'] *= m
-    nutrients['vitamin_a_remaining']['min'] -= item['vitamin_a']
+    item['vitamin_a'] = item.get('vitamin_a', 0) * m
+    nutrients['vitamin_a_remaining']['min'] -= item.get('vitamin_a', 0)
     
     return nutrients
 
