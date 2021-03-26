@@ -184,13 +184,13 @@ def update_nutrients(item, nutrients, modifier=1):
 def fetch_item_barcode(barcode):
     product = openfoodfacts.products.get_product(barcode)["product"]
     item = {}
-    item['calories']  = product["nutriments"].get("energy-kcal")
-    item['proteins']  = product["nutriments"].get("proteins_value")
-    item['vitamin_c'] = product["nutriments"].get("vitamin-c_value")
-    item['vitamin_d'] = product["nutriments"].get("vitamin-d_value")
-    item['calcium']   = product["nutriments"].get("calcium_value")
-    item['iron']      = product["nutriments"].get("iron_value")
-    item['vitamin_a'] = product["nutriments"].get("vitamin-a_value")
+    item['calories']  = product["nutriments"].get("energy-kcal", 0)
+    item['proteins']  = product["nutriments"].get("proteins_value", 0)
+    item['vitamin_c'] = product["nutriments"].get("vitamin-c_value", 0)
+    item['vitamin_d'] = product["nutriments"].get("vitamin-d_value", 0)
+    item['calcium']   = product["nutriments"].get("calcium_value", 0)
+    item['iron']      = product["nutriments"].get("iron_value", 0)
+    item['vitamin_a'] = product["nutriments"].get("vitamin-a_value", 0)
     return item
 
 def fetch_item_fdcid(fdcid):

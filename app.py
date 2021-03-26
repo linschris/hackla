@@ -9,6 +9,7 @@ from flask_cors import CORS
 
 app = Flask("server")
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/calculate/initial', methods=['POST'])
 def calculate_initial():

@@ -9,13 +9,11 @@ import base64
 def decode(image):
     # decodes all barcodes from an image
     decoded_objects = pyzbar.decode(image)
-    print(decoded_objects)
     for obj in decoded_objects:
         # draw the barcode
         # print barcode type & data
         print("Type:", obj.type)
         print("Data:", obj.data)
-        print(obj.rect)
         return (obj.data, obj.rect)
 
 def increase_contrast(image):
@@ -73,7 +71,7 @@ def get_barcode_info(image):
                 "calcium" : product["product"]["nutriments"].get("calcium_unit"),
                 "iron" : product["product"]["nutriments"].get("iron_unit"),
                 "vitamin_a" : product["product"]["nutriments"].get("vitamin-a_unit")
-            }
+                }
             }
         }
     
