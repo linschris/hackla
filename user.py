@@ -31,10 +31,6 @@ def calculate_initial_nutrients(user):
                 'min' : 15.0,
                 'unit' : 'mcg'
             },
-            'zinc_remaining' : {
-                'min' : 11.0,
-                'unit' : 'mg'
-            },
             'calcium_remaining' : {
                 'min' : 1000.0,
                 'max' : 1200.0,
@@ -63,10 +59,6 @@ def calculate_initial_nutrients(user):
             },
             'vitamin_c_remaining' : {
                 'min' : 95.0,
-                'unit' : 'mg'
-            },
-            'zinc_remaining' : {
-                'min' : 8.0,
                 'unit' : 'mg'
             },
             'vitamin_d_remaining' : {
@@ -162,9 +154,6 @@ def update_nutrients(item, nutrients, modifier=1):
     
     item['vitamin_c'] = item.get('vitamin_c', 0) * m
     nutrients['vitamin_c_remaining']['min'] -= item.get('vitamin_c', 0)
-    
-    # item['zinc'] *= m    
-    # nutrients['zinc_remaining']['min'] -= item['zinc']
     
     item['vitamin_d'] = item.get('vitamin_d', 0) * m
     nutrients['vitamin_d_remaining']['min'] -= item.get('vitamin_d', 0)
