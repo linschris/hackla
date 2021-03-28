@@ -50,8 +50,12 @@ We then developed a brand identity to further inform our design decisions. We ma
 
 <p style="text-align: center;">
 <img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Logo.png">
+</p>
+
+<p style="text-align: center;">
 <img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Logo-3.png">
 </p>
+
 <p style="text-align: center;">
 <img style="padding: 10px" src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Logo-1.png">
 </p>
@@ -62,7 +66,7 @@ We developed our full UI, incorporating elements of the natural design that we u
 <img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Homepage.png">
 <img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Add Items.png">
 <img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Analysis.png">
-<img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Search-1.png">
+<img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/Search.png">
 </p>
 
 ## What we learned
@@ -109,7 +113,7 @@ We developed our full UI, incorporating elements of the natural design that we u
 * Postman
 * Netlify
 
-### The team
+## The team
 
 * Pranav Grover
 * Tan Huynh
