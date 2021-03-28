@@ -16,7 +16,7 @@ Three of our team members had family members who had COVID-19. Concerned with th
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/tanhuynh226/hackla/main/images/interactionflowchart.png"></p>
 
-### Frontend
+### [Frontend](https://github.com/zeroclutch/recovery)
 
 In the frontend, we used [React.js](https://reactjs.org/), [Bulma.io](https://bulma.io), [SCSS](https://sass-lang.com/), and Webpack to create an installable progressive web app. We initially designed our project in Figma, and used these HTML, CSS, and JS libraries to develop the application for use. We used a library called "React Pro Camera" in order to access the camera for the barcode scanning. We also performed image cropping using HTML5 Canvas in order to improve the accuracy of our backend's barcode image recognition algorithm. Recovery uses a REST API to communicate with the backend.
 
